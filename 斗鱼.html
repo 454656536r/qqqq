@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="yangs">
+      <input type="text" placeholder="输入关键字查找" id="zbj" />
+      <input type="text" id="gk" placeholder="1~6" />
+      <button>搜索</button>
+      <div id="zb"></div>
+    </div>
+    <style>
+      #yangs {
+        width:469px;
+        background-color: antiquewhite;
+        margin: auto;
+      }
+      #zbj{
+        width: 200px;
+        height: 25px;
+      }
+      #gk{
+        width: 200px;
+        height: 25px;
+      }
+      button{
+        width: 43px;
+        height: 25px;
+      }
+    </style>
+    <script>
+      const btn = document.querySelector("button");
+      const tet = document.querySelector("#zbj");
+      const tettype = document.querySelector("#gk");
+      btn.addEventListener("click", function () {
+        let Url = "https://v.api.aa1.cn/api/api-douyu/index.php";
+        console.log(zbj.value, gk.value);
+        fetch(Url + `?msg=${zbj.value}&b=${gk.value}`)
+          .then((ser) => {
+            return ser.text();
+          })
+          .then((data) => {
+            let jsonData = data
+              .replace(/<pre.*?>/gi, "")
+              .replace(/<\/pre>/gi, "");
+            jsonData = jsonData.replace(/,\s*\}/gi, "}");
+            jsonData = jsonData.replace(/'/g, '"');
+            let ser = JSON.parse(jsonData);
+            let html = `
+            <a href="${ser.zblj}">
+              <img src = "${ser.tu}" width = "300px">
+              <p>${ser.zbj}</p>
+              <p>${ser.gk}</p>
+              </a>`;
+            document.getElementById("zb").innerHTML = html;
+          });
+      });
+    </script>
+  </body>
+</html>
